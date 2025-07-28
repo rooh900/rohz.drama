@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rohz.Drama</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Watch Korean, Chinese, Turkish & Hindi Dubbed Drama - Rohz.Drama" />
+  <meta name="keywords" content="Kdrama, Cdrama, Drama Watch, Free drama, Hindi dubbed drama, Rohz.Drama" />
+  <meta name="author" content="Rohz.Drama" />
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -22,11 +28,16 @@
     .logo {
       font-size: 2rem;
       font-weight: bold;
+      margin: 0 auto;
     }
     .logo span:first-child {
       color: #f1f1f1;
     }
     .logo span:last-child {
+      color: pink;
+    }
+    .logo::after {
+      content: " ✦";
       color: pink;
     }
     .search-bar {
@@ -53,6 +64,7 @@
       left: 1rem;
       cursor: pointer;
       font-size: 1.5rem;
+      user-select: none;
     }
     .sidebar {
       position: fixed;
@@ -64,6 +76,7 @@
       transition: 0.3s;
       padding-top: 4rem;
       z-index: 1000;
+      user-select: none;
     }
     .sidebar a {
       display: block;
@@ -78,6 +91,7 @@
     .content {
       padding: 2rem;
       margin-top: 1rem;
+      user-select: text;
     }
     .carousel {
       display: flex;
@@ -90,6 +104,8 @@
       object-fit: cover;
       border-radius: 8px;
       animation: slide 12s infinite;
+      pointer-events: none;
+      user-select: none;
     }
     @keyframes slide {
       0% { transform: translateX(0%); }
@@ -110,39 +126,39 @@
 </head>
 <body>
 
-  <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+  <div class="menu-icon" onclick="toggleSidebar()" role="button" aria-label="Toggle sidebar" tabindex="0" onkeypress="if(event.key==='Enter'){toggleSidebar();}">☰</div>
 
   <header>
-    <div class="logo" style="margin: 0 auto;"><span>Rohz.</span><span>Drama</span> ✦</div>
+    <div class="logo"><span>Rohz.</span><span>Drama</span></div>
     <div class="search-bar">
-      <input type="text" placeholder="Search...">
-      <button onclick="openAdTab()">Search</button>
+      <input id="searchInput" type="text" placeholder="Search..." aria-label="Search input" />
+      <button id="searchButton" type="button">Search</button>
     </div>
   </header>
 
-  <div id="sidebar" class="sidebar">
-    <a href="#">Chinese Drama</a>
-    <a href="#">Korean Drama</a>
-    <a href="#">Japanese Drama</a>
-    <a href="#">Pakistani Drama</a>
-    <a href="#">Turkish Drama</a>
-    <a href="#">Popular Stars</a>
-    <a href="#">Hollywood Movie</a>
-    <a href="#">Hindi Dubbed</a>
-    <a href="#">Award Show</a>
-    <a href="#">Drama Request</a>
-    <a href="#">Contact (Telegram)</a>
-    <a href="#">Contact (Instagram)</a>
+  <div id="sidebar" class="sidebar" aria-hidden="true">
+    <a href="#" tabindex="0">Chinese Drama</a>
+    <a href="#" tabindex="0">Korean Drama</a>
+    <a href="#" tabindex="0">Japanese Drama</a>
+    <a href="#" tabindex="0">Pakistani Drama</a>
+    <a href="#" tabindex="0">Turkish Drama</a>
+    <a href="#" tabindex="0">Popular Stars</a>
+    <a href="#" tabindex="0">Hollywood Movie</a>
+    <a href="#" tabindex="0">Hindi Dubbed</a>
+    <a href="#" tabindex="0">Award Show</a>
+    <a href="#" tabindex="0">Drama Request</a>
+    <a href="#" tabindex="0">Contact (Telegram)</a>
+    <a href="#" tabindex="0">Contact (Instagram)</a>
   </div>
 
   <main class="content">
-    <div class="carousel">
+    <div class="carousel" aria-live="polite" aria-label="Featured dramas carousel">
       <img src="assets/images/featured1.jpg" alt="Drama 1" />
       <img src="assets/images/featured2.jpg" alt="Drama 2" />
       <img src="assets/images/featured3.jpg" alt="Drama 3" />
     </div>
 
-    <div class="section-links">
+    <div class="section-links" role="navigation" aria-label="Drama categories">
       <div>Upcoming Drama</div>
       <div>Latest Drama</div>
       <div>Latest Movie</div>
@@ -152,11 +168,18 @@
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
-      sidebar.style.left = sidebar.style.left === "0px" ? "-260px" : "0px";
+      if(sidebar.style.left === "0px") {
+        sidebar.style.left = "-260px";
+        sidebar.setAttribute("aria-hidden", "true");
+      } else {
+        sidebar.style.left = "0px";
+        sidebar.setAttribute("aria-hidden", "false");
+      }
     }
-    function openAdTab() {
-      window.open("https://example.com/ad", "_blank");
-    }
+    document.getElementById("searchButton").addEventListener("click", () => {
+      // Open ad page in new tab securely
+      window.open("https://example.com/ad", "_blank", "noopener,noreferrer");
+    });
   </script>
 
 </body>
