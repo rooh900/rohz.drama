@@ -16,7 +16,7 @@
       font-family: Arial, sans-serif;
       background-color: #121212;
       color: #fff;
-      overflow-x: hidden;
+      overflow: hidden;
     }
     header {
       display: flex;
@@ -24,23 +24,35 @@
       align-items: center;
       background-color: #000;
       padding: 1rem 2rem;
+      position: relative;
     }
     .logo {
       font-size: 2rem;
       font-weight: bold;
       margin: 0 auto;
+      color: white;
     }
-    .logo span:first-child { color: #f1f1f1; }
-    .logo span:last-child { color: pink; }
-    .logo::after { content: " \2726"; color: pink; }
+    .logo span:first-child {
+      color: #f1f1f1;
+    }
+    .logo span:last-child {
+      color: pink;
+    }
+    .logo::after {
+      content: " ✦";
+      color: pink;
+    }
     .search-bar {
       display: flex;
       align-items: center;
+      position: absolute;
+      right: 2rem;
     }
     .search-bar input[type="text"] {
       padding: 0.4rem;
       border: none;
       border-radius: 4px;
+      font-size: 1rem;
     }
     .search-bar button {
       margin-left: 0.5rem;
@@ -50,6 +62,7 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      font-weight: bold;
     }
     .menu-icon {
       position: absolute;
@@ -58,6 +71,7 @@
       cursor: pointer;
       font-size: 1.5rem;
       user-select: none;
+      color: white;
     }
     .sidebar {
       position: fixed;
@@ -69,6 +83,8 @@
       transition: 0.3s;
       padding-top: 4rem;
       z-index: 1000;
+      user-select: none;
+      overflow-y: auto;
     }
     .sidebar a {
       display: block;
@@ -77,15 +93,23 @@
       text-decoration: none;
       font-size: 1rem;
     }
-    .sidebar a:hover { background-color: #333; }
-    .content {
+    .sidebar a:hover {
+      background-color: #333;
+    }
+    main.content {
       padding: 2rem;
       margin-top: 1rem;
+      user-select: text;
+      overflow-y: auto;
+      height: calc(100vh - 70px);
     }
     .carousel {
       display: flex;
       overflow: hidden;
       width: 100%;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      user-select: none;
     }
     .carousel img {
       width: 100%;
@@ -93,6 +117,8 @@
       object-fit: cover;
       border-radius: 8px;
       animation: slide 12s infinite;
+      pointer-events: none;
+      user-select: none;
     }
     @keyframes slide {
       0% { transform: translateX(0%); }
@@ -105,37 +131,61 @@
       display: flex;
       justify-content: space-around;
       font-size: 0.9rem;
-      color: white;
+      user-select: none;
+      cursor: pointer;
     }
-    .section { margin-top: 2rem; }
+    .section-links div {
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+    .section-links div:hover,
+    .section-links div.active {
+      background-color: pink;
+      color: black;
+      font-weight: bold;
+    }
+    section.section {
+      margin-top: 2rem;
+    }
     .section-title {
       font-size: 1.5rem;
-      margin-bottom: 1rem;
       border-bottom: 2px solid pink;
-      display: inline-block;
+      padding-bottom: 0.3rem;
+      margin-bottom: 1rem;
     }
     .thumbnails {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1rem;
     }
     .thumbnail {
       cursor: pointer;
-      background-color: #222;
       border-radius: 8px;
       overflow: hidden;
-      transition: transform 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      transition: transform 0.2s ease;
+      background-color: #222;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
     }
-    .thumbnail:hover { transform: scale(1.05); }
+    .thumbnail:hover {
+      transform: scale(1.05);
+    }
     .thumbnail img {
       width: 100%;
-      height: 280px;
-      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid #444;
+      user-select: none;
     }
     .thumbnail-title {
       padding: 0.5rem;
+      color: #fff;
+      font-weight: 600;
       text-align: center;
-      font-weight: bold;
+      user-select: text;
     }
   </style>
 </head>
@@ -144,89 +194,146 @@
   <div class="menu-icon" onclick="toggleSidebar()" role="button" aria-label="Toggle sidebar" tabindex="0" onkeypress="if(event.key==='Enter'){toggleSidebar();}">☰</div>
 
   <header>
-    <div class="logo"><span>Rohz.</span><span>Drama</span></div>
+    <div class="logo" aria-label="Website name"><span>Rohz.</span><span>Drama</span></div>
     <div class="search-bar">
       <input id="searchInput" type="text" placeholder="Search..." aria-label="Search input" />
       <button id="searchButton" type="button">Search</button>
     </div>
   </header>
 
-  <div id="sidebar" class="sidebar" aria-hidden="true">
-    <a href="#chinese-drama">Chinese Drama</a>
-    <a href="#korean-drama">Korean Drama</a>
-    <a href="#japanese-drama">Japanese Drama</a>
-    <a href="#pakistani-drama">Pakistani Drama</a>
-    <a href="#turkish-drama">Turkish Drama</a>
-    <a href="#popular-stars">Popular Stars</a>
-    <a href="#hollywood-movie">Hollywood Movie</a>
-    <a href="#hindi-dubbed">Hindi Dubbed</a>
-    <a href="#award-show">Award Show</a>
-    <a href="#drama-request">Drama Request</a>
-    <a href="#contact-tg">Contact (Telegram)</a>
-    <a href="#contact-ig">Contact (Instagram)</a>
-  </div>
+  <nav id="sidebar" class="sidebar" aria-hidden="true" role="navigation" aria-label="Sidebar menu">
+    <a href="#" tabindex="0">Chinese Drama</a>
+    <a href="#" tabindex="0">Korean Drama</a>
+    <a href="#" tabindex="0">Japanese Drama</a>
+    <a href="#" tabindex="0">Pakistani Drama</a>
+    <a href="#" tabindex="0">Turkish Drama</a>
+    <a href="#" tabindex="0">Popular Stars</a>
+    <a href="#" tabindex="0">Hollywood Movie</a>
+    <a href="#" tabindex="0">Hindi Dubbed</a>
+    <a href="#" tabindex="0">Award Show</a>
+    <a href="#" tabindex="0">Drama Request</a>
+    <a href="#" tabindex="0">Contact (Telegram)</a>
+    <a href="#" tabindex="0">Contact (Instagram)</a>
+  </nav>
 
-  <main class="content">
-    <div class="carousel">
+  <main class="content" role="main">
+    <div class="carousel" aria-live="polite" aria-label="Featured dramas carousel">
       <img src="assets/images/featured1.jpg" alt="Drama 1" />
       <img src="assets/images/featured2.jpg" alt="Drama 2" />
       <img src="assets/images/featured3.jpg" alt="Drama 3" />
     </div>
 
-    <div class="section-links">
-      <div>Upcoming Drama</div>
-      <div>Latest Drama</div>
-      <div>Latest Movie</div>
+    <div class="section-links" role="navigation" aria-label="Drama categories">
+      <div id="upcoming" class="active" onclick="showSection('upcoming')">Upcoming Drama</div>
+      <div id="latest" onclick="showSection('latest')">Latest Drama</div>
+      <div id="movies" onclick="showSection('movies')">Latest Movie</div>
     </div>
 
-    <!-- Korean Drama Section -->
-    <section id="korean-drama" class="section">
-      <div class="section-title">Korean Drama - The Glory</div>
+    <!-- Upcoming Drama Section (example content) -->
+    <section id="upcoming" class="section">
+      <div class="section-title">Upcoming Drama</div>
       <div class="thumbnails">
-        <div class="thumbnail" onclick="openVideo('videos/the-glory-ep01.mp4')">
-          <img src="thumbnails/the-glory.jpg" alt="The Glory Ep1">
-          <div class="thumbnail-title">Episode 01</div>
+        <!-- Example thumbnails, you can replace or add real ones -->
+        <div class="thumbnail" onclick="openVideo('videos/upcoming-drama1.mp4')">
+          <img src="assets/images/upcoming1.jpg" alt="Upcoming Drama 1" />
+          <div class="thumbnail-title">Upcoming Drama 1</div>
         </div>
-        <!-- Add more episodes as needed -->
-      </div>
-    </section>
-
-    <!-- Chinese Drama Section -->
-    <section id="chinese-drama" class="section">
-      <div class="section-title">Chinese Drama - Love 020</div>
-      <div class="thumbnails">
-        <div class="thumbnail" onclick="openVideo('videos/love020-ep01.mp4')">
-          <img src="thumbnails/love020.jpg" alt="Love 020 Ep1">
-          <div class="thumbnail-title">Episode 01</div>
+        <div class="thumbnail" onclick="openVideo('videos/upcoming-drama2.mp4')">
+          <img src="assets/images/upcoming2.jpg" alt="Upcoming Drama 2" />
+          <div class="thumbnail-title">Upcoming Drama 2</div>
         </div>
       </div>
     </section>
 
-    <!-- Turkish Drama Section -->
-    <section id="turkish-drama" class="section">
-      <div class="section-title">Turkish Drama - Ertugrul</div>
+    <!-- Latest Drama Section -->
+    <section id="latest" class="section" style="display:none;">
+      <div class="section-title">Latest Drama</div>
+      
+      <!-- Dare To Love Me 6 Episodes Thumbnails Start -->
       <div class="thumbnails">
-        <div class="thumbnail" onclick="openVideo('videos/ertugrul-ep01.mp4')">
-          <img src="thumbnails/ertugrul.jpg" alt="Ertugrul Ep1">
-          <div class="thumbnail-title">Episode 01</div>
+        <div class="thumbnail" onclick="openVideo('https://rooh900.github.io/rohz.drama/videos/dare-to-love-me-ep01.mp4')">
+          <img src="https://i.pinimg.com/1200x/c0/51/6a/c0516a83c5a380e16ccd7716fa4c80c2.jpg" alt="Dare To Love Me Ep1" />
+          <div class="thumbnail-title">Dare To Love Me - Episode 01</div>
+        </div>
+        <div class="thumbnail" onclick="openVideo('https://rooh900.github.io/rohz.drama/videos/dare-to-love-me-ep02.mp4')">
+          <img src="https://i.pinimg.com/1200x/c0/51/6a/c0516a83c5a380e16ccd7716fa4c80c2.jpg" alt="Dare To Love Me Ep2" />
+          <div class="thumbnail-title">Dare To Love Me - Episode 02</div>
+        </div>
+        <div class="thumbnail" onclick="openVideo('https://rooh900.github.io/rohz.drama/videos/dare-to-love-me-ep03.mp4')">
+          <img src="https://i.pinimg.com/1200x/c0/51/6a/c0516a83c5a380e16ccd7716fa4c80c2.jpg" alt="Dare To Love Me Ep3" />
+          <div class="thumbnail-title">Dare To Love Me - Episode 03</div>
+        </div>
+        <div class="thumbnail" onclick="openVideo('https://rooh900.github.io/rohz.drama/videos/dare-to-love-me-ep04.mp4')">
+          <img src="https://i.pinimg.com/1200x/c0/51/6a/c0516a83c5a380e16ccd7716fa4c80c2.jpg" alt="Dare To Love Me Ep4" />
+          <div class="thumbnail-title">Dare To Love Me - Episode 04</div>
+        </div>
+        <div class="thumbnail" onclick="openVideo('https://rooh900.github.io/rohz.drama/videos/dare-to-love-me-ep05.mp4')">
+          <img src="https://i.pinimg.com/1200x/c0/51/6a/c0516a83c5a380e16ccd7716fa4c80c2.jpg" alt="Dare To Love Me Ep5" />
+          <div class="thumbnail-title">Dare To Love Me - Episode 05</div>
+        </div>
+        <div class="thumbnail" onclick="openVideo('https://rooh900.github.io/rohz.drama/videos/dare-to-love-me-ep06.mp4')">
+          <img src="https://i.pinimg.com/1200x/c0/51/6a/c0516a83c5a380e16ccd7716fa4c80c2.jpg" alt="Dare To Love Me Ep6" />
+          <div class="thumbnail-title">Dare To Love Me - Episode 06</div>
+        </div>
+      </div>
+      <!-- Dare To Love Me 6 Episodes Thumbnails End -->
+    </section>
+
+    <!-- Latest Movie Section -->
+    <section id="movies" class="section" style="display:none;">
+      <div class="section-title">Latest Movie</div>
+      <div class="thumbnails">
+        <div class="thumbnail" onclick="openVideo('videos/latest-movie1.mp4')">
+          <img src="assets/images/movie1.jpg" alt="Latest Movie 1" />
+          <div class="thumbnail-title">Latest Movie 1</div>
+        </div>
+        <div class="thumbnail" onclick="openVideo('videos/latest-movie2.mp4')">
+          <img src="assets/images/movie2.jpg" alt="Latest Movie 2" />
+          <div class="thumbnail-title">Latest Movie 2</div>
         </div>
       </div>
     </section>
+
   </main>
 
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
-      sidebar.style.left = sidebar.style.left === "0px" ? "-260px" : "0px";
-      sidebar.setAttribute("aria-hidden", sidebar.style.left === "0px" ? "false" : "true");
+      if(sidebar.style.left === "0px") {
+        sidebar.style.left = "-260px";
+        sidebar.setAttribute("aria-hidden", "true");
+      } else {
+        sidebar.style.left = "0px";
+        sidebar.setAttribute("aria-hidden", "false");
+      }
     }
 
     document.getElementById("searchButton").addEventListener("click", () => {
+      // Open ad page in new tab securely
       window.open("https://example.com/ad", "_blank", "noopener,noreferrer");
     });
 
     function openVideo(videoPath) {
       window.open(videoPath, '_blank');
+    }
+
+    // Section toggler for Upcoming, Latest, Movies
+    function showSection(sectionId) {
+      const sections = ['upcoming', 'latest', 'movies'];
+      sections.forEach(id => {
+        document.getElementById(id).style.display = id === sectionId ? 'block' : 'none';
+        const tab = document.getElementById(id);
+        if(tab) {
+          const link = document.querySelector(`.section-links div#${id}`);
+          if(link) {
+            if(id === sectionId) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          }
+        }
+      });
     }
   </script>
 
