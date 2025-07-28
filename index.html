@@ -16,7 +16,7 @@
       font-family: Arial, sans-serif;
       background-color: #121212;
       color: #fff;
-      overflow: hidden;
+      overflow-x: hidden;
     }
     header {
       display: flex;
@@ -30,16 +30,9 @@
       font-weight: bold;
       margin: 0 auto;
     }
-    .logo span:first-child {
-      color: #f1f1f1;
-    }
-    .logo span:last-child {
-      color: pink;
-    }
-    .logo::after {
-      content: " ✦";
-      color: pink;
-    }
+    .logo span:first-child { color: #f1f1f1; }
+    .logo span:last-child { color: pink; }
+    .logo::after { content: " \2726"; color: pink; }
     .search-bar {
       display: flex;
       align-items: center;
@@ -76,7 +69,6 @@
       transition: 0.3s;
       padding-top: 4rem;
       z-index: 1000;
-      user-select: none;
     }
     .sidebar a {
       display: block;
@@ -85,13 +77,10 @@
       text-decoration: none;
       font-size: 1rem;
     }
-    .sidebar a:hover {
-      background-color: #333;
-    }
+    .sidebar a:hover { background-color: #333; }
     .content {
       padding: 2rem;
       margin-top: 1rem;
-      user-select: text;
     }
     .carousel {
       display: flex;
@@ -104,8 +93,6 @@
       object-fit: cover;
       border-radius: 8px;
       animation: slide 12s infinite;
-      pointer-events: none;
-      user-select: none;
     }
     @keyframes slide {
       0% { transform: translateX(0%); }
@@ -117,10 +104,38 @@
       margin-top: 1.5rem;
       display: flex;
       justify-content: space-around;
-    }
-    .section-links div {
-      color: white;
       font-size: 0.9rem;
+      color: white;
+    }
+    .section { margin-top: 2rem; }
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid pink;
+      display: inline-block;
+    }
+    .thumbnails {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .thumbnail {
+      cursor: pointer;
+      background-color: #222;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    .thumbnail:hover { transform: scale(1.05); }
+    .thumbnail img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+    .thumbnail-title {
+      padding: 0.5rem;
+      text-align: center;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -137,49 +152,82 @@
   </header>
 
   <div id="sidebar" class="sidebar" aria-hidden="true">
-    <a href="#" tabindex="0">Chinese Drama</a>
-    <a href="#" tabindex="0">Korean Drama</a>
-    <a href="#" tabindex="0">Japanese Drama</a>
-    <a href="#" tabindex="0">Pakistani Drama</a>
-    <a href="#" tabindex="0">Turkish Drama</a>
-    <a href="#" tabindex="0">Popular Stars</a>
-    <a href="#" tabindex="0">Hollywood Movie</a>
-    <a href="#" tabindex="0">Hindi Dubbed</a>
-    <a href="#" tabindex="0">Award Show</a>
-    <a href="#" tabindex="0">Drama Request</a>
-    <a href="#" tabindex="0">Contact (Telegram)</a>
-    <a href="#" tabindex="0">Contact (Instagram)</a>
+    <a href="#chinese-drama">Chinese Drama</a>
+    <a href="#korean-drama">Korean Drama</a>
+    <a href="#japanese-drama">Japanese Drama</a>
+    <a href="#pakistani-drama">Pakistani Drama</a>
+    <a href="#turkish-drama">Turkish Drama</a>
+    <a href="#popular-stars">Popular Stars</a>
+    <a href="#hollywood-movie">Hollywood Movie</a>
+    <a href="#hindi-dubbed">Hindi Dubbed</a>
+    <a href="#award-show">Award Show</a>
+    <a href="#drama-request">Drama Request</a>
+    <a href="#contact-tg">Contact (Telegram)</a>
+    <a href="#contact-ig">Contact (Instagram)</a>
   </div>
 
   <main class="content">
-    <div class="carousel" aria-live="polite" aria-label="Featured dramas carousel">
+    <div class="carousel">
       <img src="assets/images/featured1.jpg" alt="Drama 1" />
       <img src="assets/images/featured2.jpg" alt="Drama 2" />
       <img src="assets/images/featured3.jpg" alt="Drama 3" />
     </div>
 
-    <div class="section-links" role="navigation" aria-label="Drama categories">
+    <div class="section-links">
       <div>Upcoming Drama</div>
       <div>Latest Drama</div>
       <div>Latest Movie</div>
     </div>
+
+    <!-- Korean Drama Section -->
+    <section id="korean-drama" class="section">
+      <div class="section-title">Korean Drama - The Glory</div>
+      <div class="thumbnails">
+        <div class="thumbnail" onclick="openVideo('videos/the-glory-ep01.mp4')">
+          <img src="thumbnails/the-glory.jpg" alt="The Glory Ep1">
+          <div class="thumbnail-title">Episode 01</div>
+        </div>
+        <!-- Add more episodes as needed -->
+      </div>
+    </section>
+
+    <!-- Chinese Drama Section -->
+    <section id="chinese-drama" class="section">
+      <div class="section-title">Chinese Drama - Love 020</div>
+      <div class="thumbnails">
+        <div class="thumbnail" onclick="openVideo('videos/love020-ep01.mp4')">
+          <img src="thumbnails/love020.jpg" alt="Love 020 Ep1">
+          <div class="thumbnail-title">Episode 01</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Turkish Drama Section -->
+    <section id="turkish-drama" class="section">
+      <div class="section-title">Turkish Drama - Ertugrul</div>
+      <div class="thumbnails">
+        <div class="thumbnail" onclick="openVideo('videos/ertugrul-ep01.mp4')">
+          <img src="thumbnails/ertugrul.jpg" alt="Ertugrul Ep1">
+          <div class="thumbnail-title">Episode 01</div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
-      if(sidebar.style.left === "0px") {
-        sidebar.style.left = "-260px";
-        sidebar.setAttribute("aria-hidden", "true");
-      } else {
-        sidebar.style.left = "0px";
-        sidebar.setAttribute("aria-hidden", "false");
-      }
+      sidebar.style.left = sidebar.style.left === "0px" ? "-260px" : "0px";
+      sidebar.setAttribute("aria-hidden", sidebar.style.left === "0px" ? "false" : "true");
     }
+
     document.getElementById("searchButton").addEventListener("click", () => {
-      // Open ad page in new tab securely
       window.open("https://example.com/ad", "_blank", "noopener,noreferrer");
     });
+
+    function openVideo(videoPath) {
+      window.open(videoPath, '_blank');
+    }
   </script>
 
 </body>
