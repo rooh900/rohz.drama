@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rohz.Drama</title>
+<style>
+  body {
+    margin: 0; font-family: Arial, sans-serif;
+    background-color: #121212; color: #fff;
+    display: flex; height: 100vh;
+  }
+  .sidebar {
+    width: 180px;
+    background-color: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    padding-top: 2rem;
+  }
+  .sidebar a {
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-left: 4px solid transparent;
+    cursor: pointer;
+  }
+  .sidebar a:hover {
+    background-color: #333;
+    border-left: 4px solid #FFD700;
+  }
+  .content {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    border-bottom: 2px solid #FFD700;
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+  .thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 1rem;
+  }
+  .thumbnail {
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    transition: transform 0.2s ease;
+    background-color: #222;
+  }
+  .thumbnail:hover {
+    transform: scale(1.05);
+  }
+  .thumbnail img {
+    width: 100%;
+    display: block;
+  }
+  .thumbnail-title {
+    padding: 0.5rem;
+    background-color: #222;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <a onclick="showCategory('featured')">Featured</a>
+  <a onclick="showCategory('latest-tv')">Latest TV & Show</a>
+  <a onclick="showCategory('movies')">Movies</a>
+</div>
+
+<div class="content">
+  <div id="featured" class="category">
+    <div class="section-title">Featured</div>
+    <div class="thumbnails">
+      <div class="thumbnail" onclick="openVideo('videos/featured1.mp4')">
+        <img src="thumbnails/featured1.jpg" alt="Featured 1" />
+        <div class="thumbnail-title">Featured Drama 1</div>
+      </div>
+      <div class="thumbnail" onclick="openVideo('videos/featured2.mp4')">
+        <img src="thumbnails/featured2.jpg" alt="Featured 2" />
+        <div class="thumbnail-title">Featured Drama 2</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="latest-tv" class="category" style="display:none;">
+    <div class="section-title">Latest TV & Show</div>
+    <div class="thumbnails">
+      <div class="thumbnail" onclick="openVideo('videos/tvshow1.mp4')">
+        <img src="thumbnails/tvshow1.jpg" alt="TV Show 1" />
+        <div class="thumbnail-title">TV Show 1</div>
+      </div>
+      <div class="thumbnail" onclick="openVideo('videos/tvshow2.mp4')">
+        <img src="thumbnails/tvshow2.jpg" alt="TV Show 2" />
+        <div class="thumbnail-title">TV Show 2</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="movies" class="category" style="display:none;">
+    <div class="section-title">Movies</div>
+    <div class="thumbnails">
+      <div class="thumbnail" onclick="openVideo('videos/movie1.mp4')">
+        <img src="thumbnails/movie1.jpg" alt="Movie 1" />
+        <div class="thumbnail-title">Movie 1</div>
+      </div>
+      <div class="thumbnail" onclick="openVideo('videos/movie2.mp4')">
+        <img src="thumbnails/movie2.jpg" alt="Movie 2" />
+        <div class="thumbnail-title">Movie 2</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showCategory(id) {
+    document.querySelectorAll('.category').forEach(cat => {
+      cat.style.display = 'none';
+    });
+    document.getElementById(id).style.display = 'block';
+  }
+
+  function openVideo(url) {
+    window.open(url, '_blank');
+  }
+</script>
+
+</body>
+</html>
